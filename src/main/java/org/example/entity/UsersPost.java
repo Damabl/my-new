@@ -1,14 +1,29 @@
-package org.example;
-import java.util.ArrayList;
-import java.util.List;
+package org.example.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import org.example.Categories;
+import org.example.entity.Users;
 
+@Entity
+@Table(name="UsersPost")
 public class UsersPost {
-    private int id;
+    @Id
+    @GeneratedValue
+    private Long id;
+    @Column(name="title")
     private String title;
+    @Column(name="content")
     private String content;
+    @Column(name="image")
     private String image;
+    @Column(name="category")
     private Categories category;
-    private Users userId;
+
+   @ManyToOne
+   @JsonIgnore
+   @JoinColumn(name="user_id")
+    private Users user;
+    @Column(name="createAt")
     private String createAt;
 
     public UsersPost(String title, String content, String image, Categories category, Users userId, String createAt) {
@@ -16,16 +31,16 @@ public class UsersPost {
         this.content = content;
         this.image = image;
         this.category = category;
-        this.userId = userId;
+        this.user = userId;
         this.createAt = createAt;
     }
     public UsersPost(){}
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,12 +76,11 @@ public class UsersPost {
     }
 
     public Users getUserId() {
-        return userId;
+        return user;
     }
 
     public void setUserId(Users user) {
-        this.userId = user;
-        user.getListofPost().add(this);
+        this.user = user;
     }
 
     public String getCreateAt() {
@@ -85,7 +99,7 @@ public class UsersPost {
                 ", content='" + content + '\'' +
                 ", image='" + image + '\'' +
                 ", category=" + category +
-                ", userId=" + userId +
+                ", userId=" + user +
                 ", createAt='" + createAt + '\'' +
                 '}';
     }

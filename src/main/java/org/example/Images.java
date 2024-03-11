@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.entity.Users;
+
 public class Images {
     private int id;
     private Users userId;

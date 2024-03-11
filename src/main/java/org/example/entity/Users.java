@@ -1,35 +1,56 @@
-package org.example;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+package org.example.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
+import java.util.List;
+@Entity
+@Table(name="Users")
 public class Users {
-    private int id;
+    @Id
+    @GeneratedValue
+    private Long id;
+    @Column(name="gmail")
     private String gmail;
+    @Column(name="firstname")
     private String firstname;
+    @Column(name="lastname")
     private String lastname;
+    @Column(name="avatar")
     private String avatar;
+    @Column(name="gender")
     private boolean gender;
+    @Column(name="date")
     private String date;
-    private List<UsersPost> listofPost=new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private List<UsersPost> listofPost;
+    @Column(name="password")
+    private String password;
     public Users(){
     }
 
-    public Users(int id, String gmail, String firstname, String lastname, String avatar, boolean gender, String date) {
-        this.id = id;
+    public Users( String gmail, String firstname, String lastname, String avatar, boolean gender, String date,String password) {
         this.gmail = gmail;
         this.firstname = firstname;
         this.lastname = lastname;
         this.avatar = avatar;
         this.gender = gender;
         this.date = date;
+        this.password=password;
     }
 
-    public int getId() {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -83,12 +104,6 @@ public class Users {
 
     public List<UsersPost> getListofPost() {
         return listofPost;
-    }
-
-    public void showMeAllPosts(){
-        for(UsersPost posts : listofPost){
-            System.out.println(posts);
-        }
     }
 
     public void setListofPost(List<UsersPost> listofPost) {

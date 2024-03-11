@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.entity.Users;
+import org.example.entity.UsersPost;
+
 public class Likes {
     private int id;
     private UsersPost postId;
