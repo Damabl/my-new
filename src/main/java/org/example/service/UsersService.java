@@ -1,8 +1,7 @@
 package org.example.service;
 
-import org.example.Dto.UsersDto;
+import org.example.dto.UsersDto;
 import org.example.entity.Users;
-import org.example.entity.UsersPost;
 import org.example.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,25 +17,29 @@ public class UsersService {
 
     public String addUsers(UsersDto user){
 
-        Users existingUser = repository.findByGmail(user.getGmail());
+        Users existingUser = repository.getByGmail(user.getGmail());
         if(existingUser != null) {
             return "Пользователь с таким email уже существует";
         }else
 
-        // Проверка, что firstname и lastname не пустые
         if(user.getFirstname().isEmpty() || user.getLastname().isEmpty()) {
             return "Имя и фамилия должны быть заполнены";
         }else
 
-        // Проверка, что пароль содержит как минимум 6 символов и содержит как минимум одну цифру и одну букву
         if(user.getPassword().length() < 6 || !containsDigit(user.getPassword()) || !containsLetter(user.getPassword())) {
             return "Пароль должен содержать как минимум 6 символов и включать как минимум одну цифру и одну букву";
         }
-        Users users=new Users(user.getGmail(),user.getFirstname(),user.getLastname(),user.getAvatar(),user.isGender(),user.getDate(),user.getPassword());
+        Users users=new Users();
+        users.setGmail(user.getGmail());
+        users.setFirstname(user.getFirstname());
+        users.setLastname(user.getLastname());
+        users.setAvatar(user.getAvatar());
+        users.setGender(user.isGender());
+        users.setDate(user.getDate());
+        users.setPassword(user.getPassword());
         repository.save(users);
         return "Added";
     }
-    // Метод для проверки наличия цифры в строке
     private boolean containsDigit(String str) {
         for (char c : str.toCharArray()) {
             if (Character.isDigit(c)) {
@@ -46,7 +49,6 @@ public class UsersService {
         return false;
     }
 
-    // Метод для проверки наличия буквы в строке
     private boolean containsLetter(String str) {
         for (char c : str.toCharArray()) {
             if (Character.isLetter(c)) {
@@ -55,7 +57,7 @@ public class UsersService {
         }
         return false;
     }
-    public Users getUsersPostById(Long id){
+    public Users getUserById(Long id){
         return repository.getById(id);
     }
     public List<Users> getAllUsers(){

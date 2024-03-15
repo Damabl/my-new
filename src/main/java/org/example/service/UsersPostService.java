@@ -1,24 +1,50 @@
 package org.example.service;
 
-import org.example.Dto.UsersPostDto;
+import lombok.RequiredArgsConstructor;
+import org.example.dto.UsersPostDto;
 import org.example.entity.UsersPost;
 import org.example.repository.UsersPostRepository;
 import org.springframework.stereotype.Service;
 
-@Service
-public class UsersPostService {
-    private final UsersPostRepository repository;
-    private final UsersService usersService;
+import java.util.List;
 
-    public UsersPostService(UsersPostRepository repository, UsersService usersService) {
-        this.repository = repository;
-        this.usersService = usersService;
-    }
+@Service
+@RequiredArgsConstructor
+public class UsersPostService {
+    private final UsersPostRepository usersPostRepository;
+    private final UsersService usersService;
+    private final CategoriesServise categoriesServise;
+
     public String addUsersPost(UsersPostDto post){
-        UsersPost usersPost=new UsersPost(post.getTitle(),post.getContent(),post.getImage(),post.getCategory(),usersService.getUsersPostById(post.getUser()), post.getCreateAt());
-//        usersService.getUsersPostById(post.getUser()).getListofPost().add(usersPost);
-        repository.save(usersPost);
+        UsersPost usersPost=new UsersPost();
+        if (post.getTitle() == null || post.getTitle().isEmpty()) {
+            return "Title cannot be empty";
+        }else{
+            usersPost.setTitle(post.getTitle());
+        }
+        if (post.getContent() == null || post.getContent().isEmpty()) {
+            return "Content cannot be empty";
+        }else{
+            usersPost.setContent(post.getContent());
+        }
+        if(categoriesServise.isIdentical(post.getCategory())){
+            return "This category do not exists";
+        }else {
+            usersPost.setContent(post.getContent());
+        }
+
+        usersPost.setImage(post.getImage());
+        usersPost.setCategory(post.getCategory());
+        usersPost.setUser(usersService.getUserById(post.getUser()));
+        usersPost.setCreateAt(post.getCreateAt());
+        usersPostRepository.save(usersPost);
         return "Added";
+    }
+    public UsersPost getPostById(Long id){
+        return usersPostRepository.getById(id);
+    }
+    public List<UsersPost> getAllUsersPost(){
+        return usersPostRepository.findAll();
     }
 
 
