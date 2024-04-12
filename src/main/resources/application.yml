@@ -6,7 +6,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/vk
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
 server:
   port: 8092

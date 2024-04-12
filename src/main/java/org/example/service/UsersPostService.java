@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.UsersPostDto;
 import org.example.entity.UsersPost;
 import org.example.repository.UsersPostRepository;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -28,17 +30,15 @@ public class UsersPostService {
         }else{
             usersPost.setContent(post.getContent());
         }
-        if(categoriesServise.isIdentical(post.getCategory())){
-            return "This category do not exists";
-        }else {
-            usersPost.setContent(post.getContent());
+        try {
+            usersPost.setImage(post.getImage());
+            usersPost.setCategory(categoriesServise.getCategoryById(post.getCategory()));
+            usersPost.setUser(usersService.getUserById(post.getUser()));
+            usersPost.setCreatedAt(LocalDateTime.now());
+            usersPostRepository.save(usersPost);
+        }catch (ChangeSetPersister.NotFoundException ex){
+            return "NotFoundExpection";
         }
-
-        usersPost.setImage(post.getImage());
-        usersPost.setCategory(post.getCategory());
-        usersPost.setUser(usersService.getUserById(post.getUser()));
-        usersPost.setCreatedAt(post.getCreateAt());
-        usersPostRepository.save(usersPost);
         return "Added";
     }
     public UsersPost getPostById(Long id){
@@ -49,14 +49,16 @@ public class UsersPostService {
         if (existingPost == null) {
             return "There isnt this post";
         }
-
+     try{
         // Map updated fields from updatedPostDto to existingPost
         existingPost.setTitle(updatedPostDto.getTitle());
         existingPost.setContent(updatedPostDto.getContent());
         existingPost.setImage(updatedPostDto.getImage());
-        existingPost.setCategory(updatedPostDto.getCategory());
+        existingPost.setCategory(categoriesServise.getCategoryById(updatedPostDto.getCategory()));
         UsersPost updatedPost = usersPostRepository.save(existingPost);
-
+    }catch (ChangeSetPersister.NotFoundException ex){
+        return "NotFoundExpection";
+    }
         return "Users post updated successfully";
     }
 

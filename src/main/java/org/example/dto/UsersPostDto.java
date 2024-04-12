@@ -9,12 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 public class UsersPostDto {
-        private Long id;
         private String title;
         private String content;
         private String image;
-        private String category;
+        private Long category;
         private Long user;
-        private LocalDateTime createAt;
-
 }

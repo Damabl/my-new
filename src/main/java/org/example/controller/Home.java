@@ -79,5 +79,8 @@ public class Home {
     public List<Images> getAllImages(){
         return imagesService.getAllImages();
     }
-
+    @GetMapping("/category")
+    public List<Categories> getAllCategories(){
+        return categoriesServise.getAllCategories();
+    }
 }

@@ -25,11 +25,11 @@ public class UsersPost {
     @Column(name = "content", columnDefinition = "TEXT") // Example JDBC type specification
     private String content;
 
-    @Column(name = "image", columnDefinition = "VARCHAR(255)") // Example JDBC type specification
+    @Column(name = "image", columnDefinition = "TEXT") // Example JDBC type specification
     private String image;
-
-    @Column(name = "category", columnDefinition = "VARCHAR(50)") // Example JDBC type specification
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category")
+    private Categories category;
 
     @Column(name = "createdAt", columnDefinition = "TIMESTAMP") // Example JDBC type specification
     private LocalDateTime createdAt;
