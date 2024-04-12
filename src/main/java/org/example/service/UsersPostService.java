@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.UsersPostDto;
 import org.example.entity.UsersPost;
 import org.example.repository.UsersPostRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,12 +37,32 @@ public class UsersPostService {
         usersPost.setImage(post.getImage());
         usersPost.setCategory(post.getCategory());
         usersPost.setUser(usersService.getUserById(post.getUser()));
-        usersPost.setCreateAt(post.getCreateAt());
+        usersPost.setCreatedAt(post.getCreateAt());
         usersPostRepository.save(usersPost);
         return "Added";
     }
     public UsersPost getPostById(Long id){
         return usersPostRepository.getById(id);
+    }
+    public String updateUsersPost(UsersPostDto updatedPostDto,Long id){
+        UsersPost existingPost = usersPostRepository.getById(id);
+        if (existingPost == null) {
+            return "There isnt this post";
+        }
+
+        // Map updated fields from updatedPostDto to existingPost
+        existingPost.setTitle(updatedPostDto.getTitle());
+        existingPost.setContent(updatedPostDto.getContent());
+        existingPost.setImage(updatedPostDto.getImage());
+        existingPost.setCategory(updatedPostDto.getCategory());
+        UsersPost updatedPost = usersPostRepository.save(existingPost);
+
+        return "Users post updated successfully";
+    }
+
+    public String deleteUsersPost(Long id){
+        usersPostRepository.deleteById(id);
+        return "deleted";
     }
     public List<UsersPost> getAllUsersPost(){
         return usersPostRepository.findAll();

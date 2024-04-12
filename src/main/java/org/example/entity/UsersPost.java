@@ -1,4 +1,5 @@
 package org.example.entity;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,25 +14,29 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="UsersPost")
+@Table(name = "users_post")
 public class UsersPost {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="title")
+    @Column(name = "title", columnDefinition = "VARCHAR(255)") // Example JDBC type specification
     private String title;
-    @Column(name="content")
+
+    @Column(name = "content", columnDefinition = "TEXT") // Example JDBC type specification
     private String content;
-    @Column(name="image")
+
+    @Column(name = "image", columnDefinition = "VARCHAR(255)") // Example JDBC type specification
     private String image;
-    @Column(name="category")
+
+    @Column(name = "category", columnDefinition = "VARCHAR(50)") // Example JDBC type specification
     private String category;
 
-   @ManyToOne
-   @JsonIgnore
-   @JoinColumn(name="user_id")
-    private Users user;
-    @Column(name="createAt")
-    private LocalDateTime createAt;
+    @Column(name = "createdAt", columnDefinition = "TIMESTAMP") // Example JDBC type specification
+    private LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+
+    // Corrected field name to match column name in the database
 }

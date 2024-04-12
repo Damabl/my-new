@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,10 +18,12 @@ public class Likes {
     @GeneratedValue
     private Long id;
     @ManyToOne
-    @JoinColumn(name="post_id")
-    private UsersPost post;
-    @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="user_id")
     private Users user;
+    @ManyToOne
+    @JoinColumn(name="post_id")
+    private UsersPost post;
+
 
 }

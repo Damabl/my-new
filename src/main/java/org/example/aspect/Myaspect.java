@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.example.entity.Logger;
 import org.example.service.LoggerService;
 import org.springframework.stereotype.Component;
@@ -25,8 +26,12 @@ public class Myaspect {
         String request= Arrays.stream(joinPoint.getArgs()).map(Object::toString).collect(Collectors.joining(","));
         Logger logger=new Logger(null,request,answer, LocalDateTime.now());
         loggerService.log(logger);
-        log.info("1-{}\n2-{}",joinPoint.getArgs(),answer);
-
         return answer;
     }
+    @Before("execution(public void getNews())")
+    public void News(){
+        System.out.println("News is showed");
+    }
+
+
 }

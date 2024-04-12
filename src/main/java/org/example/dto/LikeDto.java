@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class LikeDto {
+    private Long id;
     private Long user;
-    private Long Userpost;
+    private Long post;
 }

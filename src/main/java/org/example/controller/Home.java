@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/home")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class Home {
     private final UsersService usersService;
@@ -29,8 +30,7 @@ public class Home {
     public String sendUsersPost(@RequestBody UsersPostDto postDto){
         return usersPostService.addUsersPost(postDto);
     }
-    @MyLogger
-    @PostMapping("/messsage")
+    @PostMapping("/message")
     public String sendMessage(@RequestBody MessageDto messageDto){
         return messageService.addMessage(messageDto);
     }
@@ -48,7 +48,7 @@ public class Home {
     public String sendImages(@RequestBody ImagesDto imagesDto){
         return imagesService.addImages(imagesDto);
     }
-    @MyLogger
+
     @GetMapping("/users")
     public List<Users> getAllUsers(){
         return usersService.getAllUsers();
@@ -57,17 +57,24 @@ public class Home {
     public List<UsersPost> getAllUsersPost(){
         return usersPostService.getAllUsersPost();
     }
-    @MyLogger
+
     @GetMapping("/message")
     public List<Message> getAllMessage(){
         return messageService.getAllMessage();
     }
-    @MyLogger
+    @PutMapping("/usersposts/{id}")
+    public String updateUsersPost(@PathVariable Long id, @RequestBody UsersPostDto updatedPostDto) {
+        return usersPostService.updateUsersPost(updatedPostDto,id);
+    }
+    @DeleteMapping("/usersposts/{id}")
+    public String deleteUsersPost(@PathVariable Long id){
+        return usersPostService.deleteUsersPost(id);
+    }
     @GetMapping("/like")
     public List<Likes> getAllLikes(){
         return likesService.getAllLikes();
     }
-    @MyLogger
+
     @GetMapping("/images")
     public List<Images> getAllImages(){
         return imagesService.getAllImages();

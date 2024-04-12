@@ -16,11 +16,11 @@ public class LikesService {
     private final LikeRepository likeRepository;
     public String addLike(LikeDto likeDto){
         Likes likes=new Likes();
-        if(isLiked(likeDto.getUser(),likeDto.getUserpost())){
+        if(isLiked(likeDto.getUser(),likeDto.getPost())){
             return "This post already liked";
         }
         likes.setUser(usersService.getUserById(likeDto.getUser()));
-        likes.setPost(usersPostService.getPostById(likeDto.getUserpost()));
+        likes.setPost(usersPostService.getPostById(likeDto.getPost()));
         likeRepository.save(likes);
         return "added";
     }

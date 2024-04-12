@@ -9,8 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 public class MessageDto {
-    private LocalDateTime timeofSend;
     private String message;
-    private Long user_sender;
-    private Long user_recipient;
+    private Long senderId;
+    private Long recipientId;
 }

@@ -30,7 +30,17 @@ public class Users {
     @Column(name="date")
     private String date;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UsersPost> listofPost;
+    @OneToMany(mappedBy = "senderId")
+    @JsonIgnore
+    private List<Message> sentMessages;
+    @OneToMany(mappedBy = "recipientId")
+    @JsonIgnore
+    private List<Message> receivedMessages;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Images> images;
     @Column(name="password")
     private String password;
 
